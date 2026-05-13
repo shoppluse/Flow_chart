@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Srinidhi Veg | Authentic South Indian Restaurant</title>
+<meta name="description" content="Srinidhi Veg - Premium South Indian vegetarian restaurant. Authentic taste, affordable prices, hygienic food."/>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#fffdf5;color:#1a2e1a;overflow-x:hidden;}
+img{display:block;max-width:100%;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;font-family:inherit;border:none;outline:none;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:#f0ede0;}
+::-webkit-scrollbar-thumb{background:#2d6a2d;border-radius:99px;}
+
+/* ===== CSS VARIABLES ===== */
+:root{
+  --green-dark:  #1a3d1a;
+  --green:       #2d6a2d;
+  --green-light: #4a9a4a;
+  --green-pale:  #e8f5e8;
+  --cream:       #fffdf5;
+  --cream-2:     #f5f0dc;
+  --cream-3:     #ede8d0;
+  --gold:        #c9a84c;
+  --gold-light:  #e8c86a;
+  --gold-pale:   #fdf8e8;
+  --white:       #ffffff;
+  --text:        #1a2e1a;
+  --text-2:      #3d5a3d;
+  --muted:       #7a8f7a;
+  --shadow-sm:   0 2px 8px rgba(26,61,26,0.08);
+  --shadow-md:   0 6px 24px rgba(26,61,26,0.12);
+  --shadow-lg:   0 16px 48px rgba(26,61,26,0.16);
+  --radius-sm:   10px;
+  --radius-md:   18px;
+  --radius-lg:   28px;
+  --pad:         clamp(16px,4vw,48px);
+}
+
+/* ===== LOADING SCREEN ===== */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--green-dark);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;
+  transition:opacity 0.6s ease,visibility 0.6s ease;
+}
+#loader.hidden{opacity:0;visibility:hidden;}
+.loader-logo{
+  font-size:2rem;font-weight:800;color:var(--gold);
+  letter-spacing:2px;text-align:center;
+}
+.loader-sub{font-size:0.8rem;color:rgba(255,255,255,0.5);letter-spacing:3px;text-transform:uppercase;}
+.loader-bar{
+  width:160px;height:3px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;margin-top:8px;
+}
+.loader-fill{
+  height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  border-radius:99px;animation:loadFill 1.8s ease forwards;
+}
+@keyframes loadFill{to{width:100%;}}
+
+/* ===== NAVBAR ===== */
+#navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:16px var(--pad);
+  transition:all 0.4s ease;
+}
+#navbar.scrolled{
+  background:rgba(26,61,26,0.95);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  padding:10px var(--pad);
+  box-shadow:0 4px 24px rgba(0,0,0,0.2);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;
+}
+.nav-logo{
+  display:flex;flex-direction:column;
+  gap:1px;
+}
+.nav-logo-name{
+  font-size:1.4rem;font-weight:800;
+  color:var(--gold);letter-spacing:1px;line-height:1;
+}
+.nav-logo-tag{
+  font-size:0.55rem;letter-spacing:3px;
+  text-transform:uppercase;color:rgba(255,255,255,0.6);
+}
+.nav-links{
+  display:flex;align-items:center;gap:6px;
+}
+.nav-link{
+  padding:8px 14px;border-radius:99px;
+  font-size:0.85rem;font-weight:600;
+  color:rgba(255,255,255,0.85);
+  transition:all 0.25s ease;
+  white-space:nowrap;
+}
+.nav-link:hover{background:rgba(201,168,76,0.2);color:var(--gold);}
+.nav-link.active{background:var(--gold);color:var(--green-dark);}
+.nav-cta{
+  background:var(--gold);color:var(--green-dark);
+  padding:9px 20px;border-radius:99px;
+  font-size:0.82rem;font-weight:700;
+  transition:all 0.25s ease;
+  white-space:nowrap;
+}
+.nav-cta:hover{background:var(--gold-light);transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,0.4);}
+
+/* Hamburger */
+.hamburger{
+  display:none;flex-direction:column;gap:5px;
+  width:36px;height:36px;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.1);border-radius:8px;
+  cursor:pointer;transition:background 0.2s;
+}
+.hamburger:hover{background:rgba(255,255,255,0.2);}
+.hamburger span{
+  display:block;width:20px;height:2px;
+  background:var(--gold);border-radius:99px;
+  transition:all 0.3s ease;
+}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:translateX(-8px);}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* Mobile menu */
+.mobile-menu{
+  position:fixed;top:0;right:0;bottom:0;width:min(280px,85vw);
+  background:var(--green-dark);z-index:999;
+  padding:80px 24px 32px;
+  display:flex;flex-direction:column;gap:8px;
+  transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:-8px 0 32px rgba(0,0,0,0.3);
+}
+.mobile-menu.open{transform:translateX(0);}
+.mobile-overlay{
+  position:fixed;inset:0;z-index:998;
+  background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);
+  opacity:0;visibility:hidden;transition:all 0.3s ease;
+}
+.mobile-overlay.open{opacity:1;visibility:visible;}
+.mobile-link{
+  padding:14px 16px;border-radius:var(--radius-sm);
+  font-size:1rem;font-weight:600;color:rgba(255,255,255,0.85);
+  transition:all 0.2s;border-left:3px solid transparent;
+}
+.mobile-link:hover{background:rgba(201,168,76,0.15);color:var(--gold);border-left-color:var(--gold);padding-left:24px;}
+
+/* ===== HERO ===== */
+#hero{
+  min-height:100vh;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    linear-gradient(160deg, rgba(26,61,26,0.85) 0%, rgba(26,61,26,0.6) 50%, rgba(26,61,26,0.8) 100%),
+    url('images/hero.jpg') center/cover no-repeat;
+  /* Fallback pattern when image missing */
+  background-color:var(--green-dark);
+}
+.hero-bg::after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.15) 0%, transparent 60%);
+}
+.hero-content{
+  position:relative;z-index:1;
+  text-align:center;padding:0 var(--pad);
+  max-width:780px;
+  animation:heroIn 1s ease 0.5s both;
+}
+@keyframes heroIn{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);
+  border-radius:99px;padding:6px 16px;
+  font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold-light);margin-bottom:24px;
+}
+.hero-badge-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.4);}}
+.hero-title{
+  font-size:clamp(2.2rem,6vw,4.2rem);
+  font-weight:900;color:var(--white);
+  line-height:1.1;letter-spacing:-1px;margin-bottom:16px;
+}
+.hero-title span{color:var(--gold-light);}
+.hero-sub{
+  font-size:clamp(0.95rem,2vw,1.15rem);
+  color:rgba(255,255,255,0.75);line-height:1.7;
+  margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto;
+}
+.hero-btns{
+  display:flex;align-items:center;justify-content:center;
+  gap:14px;flex-wrap:wrap;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:var(--green-dark);padding:14px 32px;border-radius:99px;
+  font-size:0.95rem;font-weight:700;letter-spacing:0.3px;
+  transition:all 0.3s ease;box-shadow:0 4px 20px rgba(201,168,76,0.4);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(201,168,76,0.5);}
+.btn-outline{
+  background:rgba(255,255,255,0.1);
+  border:2px solid rgba(255,255,255,0.5);
+  color:var(--white);padding:12px 28px;border-radius:99px;
+  font-size:0.95rem;font-weight:600;
+  transition:all 0.3s ease;backdrop-filter:blur(8px);
+  display:flex;align-items:center;gap:8px;
+}
+.btn-outline:hover{background:rgba(255,255,255,0.2);border-color:var(--white);transform:translateY(-3px);}
+.btn-wa{
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:var(--white);padding:14px 28px;border-radius:99px;
+  font-size:0.95rem;font-weight:700;
+  display:flex;align-items:center;gap:8px;
+  transition:all 0.3s ease;box-shadow:0 4px 20px rgba(37,211,102,0.3);
+}
+.btn-wa:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(37,211,102,0.45);}
+.wa-icon{font-size:1.2rem;}
+.scroll-indicator{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:rgba(255,255,255,0.5);font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;
+  animation:bounce 2s infinite;
+}
+.scroll-mouse{
+  width:22px;height:34px;border:2px solid rgba(255,255,255,0.4);border-radius:99px;
+  display:flex;justify-content:center;padding-top:5px;
+}
+.scroll-mouse::after{
+  content:"";width:3px;height:8px;background:var(--gold);border-radius:99px;
+  animation:scrollDot 2s infinite;
+}
+@keyframes scrollDot{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(10px);opacity:0;}}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-8px);}}
+
+/* ===== SECTION COMMON ===== */
+section{padding:80px 0;}
+.section-inner{max-width:1200px;margin:0 auto;padding:0 var(--pad);}
+.section-tag{
+  display:inline-block;
+  background:var(--green-pale);color:var(--green);
+  border:1px solid rgba(45,106,45,0.2);
+  padding:5px 14px;border-radius:99px;
+  font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:12px;
+}
+.section-title{
+  font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;
+  color:var(--green-dark);line-height:1.15;letter-spacing:-0.5px;
+  margin-bottom:14px;
+}
+.section-title span{color:var(--gold);}
+.section-sub{
+  color:var(--muted);font-size:1rem;line-height:1.7;
+  max-width:580px;
+}
+.divider{
+  width:56px;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  border-radius:99px;margin:16px 0 32px;
+}
+.divider.center{margin-left:auto;margin-right:auto;}
+.text-center{text-align:center;}
+.text-center .section-sub{margin:0 auto;}
+
+/* ===== ABOUT ===== */
+#about{background:var(--white);}
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:64px;align-items:center;
+}
+.about-img-wrap{
+  position:relative;border-radius:var(--radius-lg);overflow:hidden;
+  box-shadow:var(--shadow-lg);
+}
+.about-img-wrap::before{
+  content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,transparent 60%,rgba(26,61,26,0.5));
+}
+.about-img{
+  width:100%;aspect-ratio:4/5;object-fit:cover;
+  background:linear-gradient(135deg,var(--green-pale),var(--cream-3));
+  /* Placeholder when image missing */
+  display:flex;align-items:center;justify-content:center;
+  font-size:5rem;
+}
+.about-img-label{
+  position:absolute;bottom:20px;left:20px;z-index:2;
+  background:rgba(26,61,26,0.85);backdrop-filter:blur(10px);
+  border:1px solid rgba(201,168,76,0.3);
+  color:var(--white);padding:12px 18px;border-radius:var(--radius-sm);
+}
+.about-img-label strong{display:block;font-size:1.4rem;color:var(--gold);}
+.about-img-label span{font-size:0.72rem;opacity:0.75;letter-spacing:1px;}
+.about-features{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px;
+}
+.feat-card{
+  background:var(--cream);border:1px solid var(--cream-3);
+  border-radius:var(--radius-sm);padding:16px;
+  transition:all 0.3s ease;
+}
+.feat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--gold);}
+.feat-icon{font-size:1.8rem;margin-bottom:8px;}
+.feat-title{font-size:0.85rem;font-weight:700;color:var(--green-dark);margin-bottom:4px;}
+.feat-desc{font-size:0.75rem;color:var(--muted);line-height:1.5;}
+
+/* ===== MENU ===== */
+#menu{background:var(--cream);}
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:24px;margin-top:48px;
+}
+.menu-card{
+  background:var(--white);border-radius:var(--radius-md);
+  overflow:hidden;box-shadow:var(--shadow-sm);
+  transition:all 0.35s ease;border:1px solid transparent;
+}
+.menu-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg);border-color:var(--gold);}
+.menu-img{
+  width:100%;aspect-ratio:4/3;object-fit:cover;
+  background:linear-gradient(135deg,var(--green-pale),var(--cream-3));
+  display:flex;align-items:center;justify-content:center;
+  font-size:4rem;transition:transform 0.4s ease;
+  position:relative;overflow:hidden;
+}
+.menu-img::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(26,61,26,0.1));
+}
+.menu-card:hover .menu-img{transform:scale(1.05);}
+.menu-badge{
+  position:absolute;top:12px;right:12px;z-index:1;
+  background:var(--gold);color:var(--green-dark);
+  padding:4px 10px;border-radius:99px;
+  font-size:0.65rem;font-weight:800;letter-spacing:0.5px;
+}
+.menu-body{padding:18px 20px 20px;}
+.menu-name{
+  font-size:1.05rem;font-weight:700;color:var(--green-dark);
+  margin-bottom:6px;
+}
+.menu-desc{font-size:0.8rem;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.menu-footer{display:flex;align-items:center;justify-content:space-between;}
+.menu-price{
+  font-size:1.15rem;font-weight:800;
+  color:var(--green);
+}
+.menu-price span{font-size:0.75rem;color:var(--muted);font-weight:500;}
+.menu-order{
+  background:var(--green-pale);color:var(--green);
+  border:1px solid rgba(45,106,45,0.2);
+  padding:7px 14px;border-radius:99px;
+  font-size:0.75rem;font-weight:700;
+  transition:all 0.2s ease;
+}
+.menu-order:hover{background:var(--green);color:var(--white);}
+
+/* ===== GALLERY ===== */
+#gallery{background:var(--white);}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:auto auto;
+  gap:16px;margin-top:48px;
+}
+.gal-item{
+  border-radius:var(--radius-md);overflow:hidden;
+  position:relative;cursor:pointer;
+  background:var(--green-pale);
+}
+.gal-item:nth-child(1){grid-row:span 2;}
+.gal-item:nth-child(4){grid-column:span 2;}
+.gal-img{
+  width:100%;height:100%;min-height:200px;
+  object-fit:cover;
+  background:linear-gradient(135deg,var(--green-pale),var(--cream-3));
+  display:flex;align-items:center;justify-content:center;
+  font-size:3.5rem;transition:transform 0.4s ease;
+}
+.gal-item:nth-child(1) .gal-img{min-height:420px;}
+.gal-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(26,61,26,0.75));
+  opacity:0;transition:opacity 0.3s ease;
+  display:flex;align-items:flex-end;padding:20px;
+}
+.gal-item:hover .gal-overlay{opacity:1;}
+.gal-item:hover .gal-img{transform:scale(1.06);}
+.gal-label{color:var(--white);font-weight:700;font-size:0.9rem;}
+
+/* ===== REVIEWS ===== */
+#reviews{background:var(--green-dark);}
+#reviews .section-tag{background:rgba(201,168,76,0.15);color:var(--gold-light);border-color:rgba(201,168,76,0.3);}
+#reviews .section-title{color:var(--white);}
+#reviews .section-sub{color:rgba(255,255,255,0.6);}
+#reviews .divider{background:linear-gradient(90deg,var(--gold),var(--gold-light));}
+.reviews-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:24px;margin-top:48px;
+}
+.review-card{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--radius-md);padding:28px;
+  transition:all 0.3s ease;
+  position:relative;overflow:hidden;
+}
+.review-card::before{
+  content:"\201C";position:absolute;top:-8px;left:16px;
+  font-size:6rem;color:rgba(201,168,76,0.1);
+  font-family:Georgia,serif;line-height:1;pointer-events:none;
+}
+.review-card:hover{
+  background:rgba(255,255,255,0.08);
+  border-color:rgba(201,168,76,0.3);
+  transform:translateY(-4px);
+}
+.review-stars{
+  color:var(--gold);font-size:1rem;letter-spacing:2px;margin-bottom:14px;
+}
+.review-text{
+  color:rgba(255,255,255,0.8);font-size:0.92rem;line-height:1.75;
+  margin-bottom:20px;font-style:italic;
+}
+.review-author{display:flex;align-items:center;gap:12px;}
+.review-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1rem;color:var(--green-dark);
+  flex-shrink:0;
+}
+.review-name{font-weight:700;color:var(--white);font-size:0.9rem;}
+.review-date{font-size:0.72rem;color:rgba(255,255,255,0.4);}
+
+/* ===== MAP ===== */
+#map-section{background:var(--cream);}
+.map-wrap{
+  border-radius:var(--radius-lg);overflow:hidden;
+  box-shadow:var(--shadow-lg);margin-top:48px;
+  border:4px solid var(--white);
+}
+.map-wrap iframe{width:100%;height:420px;display:block;border:none;}
+
+/* ===== CONTACT ===== */
+#contact{background:var(--white);}
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:48px;align-items:start;
+}
+.contact-info-cards{display:flex;flex-direction:column;gap:16px;margin-top:32px;}
+.info-card{
+  display:flex;align-items:flex-start;gap:16px;
+  background:var(--cream);border:1px solid var(--cream-3);
+  border-radius:var(--radius-sm);padding:18px 20px;
+  transition:all 0.25s ease;
+}
+.info-card:hover{border-color:var(--gold);transform:translateX(4px);}
+.info-icon{
+  width:44px;height:44px;border-radius:var(--radius-sm);
+  background:var(--green-pale);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;flex-shrink:0;
+}
+.info-label{font-size:0.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.info-val{font-size:0.92rem;font-weight:600;color:var(--green-dark);line-height:1.5;}
+.contact-form-card{
+  background:var(--cream);border:1px solid var(--cream-3);
+  border-radius:var(--radius-lg);padding:32px;
+  box-shadow:var(--shadow-md);
+}
+.form-title{font-size:1.2rem;font-weight:700;color:var(--green-dark);margin-bottom:6px;}
+.form-sub{font-size:0.82rem;color:var(--muted);margin-bottom:24px;}
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:0.75rem;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
+.form-input,.form-textarea{
+  width:100%;padding:12px 14px;
+  background:var(--white);border:1.5px solid var(--cream-3);
+  border-radius:var(--radius-sm);
+  font-size:0.9rem;color:var(--text);
+  transition:border-color 0.2s,box-shadow 0.2s;outline:none;
+  font-family:inherit;
+}
+.form-input:focus,.form-textarea:focus{
+  border-color:var(--green);box-shadow:0 0 0 3px rgba(45,106,45,0.1);
+}
+.form-textarea{min-height:110px;resize:vertical;}
+.form-submit{
+  width:100%;background:linear-gradient(135deg,var(--green),var(--green-light));
+  color:var(--white);padding:13px;border-radius:var(--radius-sm);
+  font-size:0.92rem;font-weight:700;letter-spacing:0.5px;
+  transition:all 0.3s ease;box-shadow:0 4px 16px rgba(45,106,45,0.3);
+}
+.form-submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(45,106,45,0.4);}
+.btn-whatsapp{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:var(--white);padding:13px 24px;border-radius:99px;
+  font-size:0.92rem;font-weight:700;margin-top:12px;width:100%;justify-content:center;
+  transition:all 0.3s ease;box-shadow:0 4px 16px rgba(37,211,102,0.3);
+}
+.btn-whatsapp:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,0.45);}
+
+/* ===== FOOTER ===== */
+footer{
+  background:var(--green-dark);
+  padding:48px var(--pad) 24px;
+}
+.footer-inner{max-width:1200px;margin:0 auto;}
+.footer-top{
+  display:grid;grid-template-columns:2fr 1fr 1fr;
+  gap:48px;padding-bottom:40px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.footer-brand-name{font-size:1.5rem;font-weight:800;color:var(--gold);letter-spacing:1px;margin-bottom:4px;}
+.footer-brand-tag{font-size:0.65rem;letter-spacing:2px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:14px;}
+.footer-brand-desc{font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.7;max-width:300px;}
+.footer-heading{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;}
+.footer-links{display:flex;flex-direction:column;gap:10px;}
+.footer-link{font-size:0.85rem;color:rgba(255,255,255,0.6);transition:color 0.2s;padding:2px 0;}
+.footer-link:hover{color:var(--gold);}
+.social-row{display:flex;gap:10px;margin-top:20px;}
+.social-btn{
+  width:38px;height:38px;border-radius:50%;
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:rgba(255,255,255,0.7);
+  transition:all 0.25s ease;
+}
+.social-btn:hover{background:var(--gold);color:var(--green-dark);border-color:var(--gold);transform:translateY(-2px);}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:24px;gap:16px;flex-wrap:wrap;
+}
+.footer-copy{font-size:0.78rem;color:rgba(255,255,255,0.4);}
+.footer-credit{font-size:0.75rem;color:rgba(255,255,255,0.35);}
+.footer-credit strong{color:var(--gold);}
+
+/* ===== FLOATING BUTTONS ===== */
+.float-wa{
+  position:fixed;bottom:88px;right:20px;z-index:500;
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:var(--white);font-size:1.5rem;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(37,211,102,0.5);
+  transition:all 0.3s ease;
+  animation:floatIn 0.5s ease 2s both;
+}
+.float-wa:hover{transform:scale(1.1);box-shadow:0 8px 32px rgba(37,211,102,0.6);}
+.float-top{
+  position:fixed;bottom:24px;right:20px;z-index:500;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--green);color:var(--white);
+  font-size:1.1rem;border:none;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--shadow-md);cursor:pointer;
+  transition:all 0.3s ease;
+  opacity:0;visibility:hidden;
+}
+.float-top.show{opacity:1;visibility:visible;}
+.float-top:hover{background:var(--green-dark);transform:translateY(-3px);}
+@keyframes floatIn{from{opacity:0;transform:scale(0);}to{opacity:1;transform:scale(1);}}
+
+/* ===== SCROLL ANIMATIONS ===== */
+.fade-up{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+.fade-left{opacity:0;transform:translateX(-32px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.fade-left.visible{opacity:1;transform:translateX(0);}
+.fade-right{opacity:0;transform:translateX(32px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.fade-right.visible{opacity:1;transform:translateX(0);}
+
+/* Stagger delays */
+.delay-1{transition-delay:0.1s;}
+.delay-2{transition-delay:0.2s;}
+.delay-3{transition-delay:0.3s;}
+.delay-4{transition-delay:0.4s;}
+.delay-5{transition-delay:0.5s;}
+
+/* ===== STATS BAR ===== */
+.stats-bar{
+  background:linear-gradient(135deg,var(--green),var(--green-dark));
+  padding:32px var(--pad);
+}
+.stats-inner{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+}
+.stat-item{text-align:center;}
+.stat-num{font-size:2rem;font-weight:900;color:var(--gold);line-height:1;}
+.stat-label{font-size:0.72rem;color:rgba(255,255,255,0.6);letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .footer-top{grid-template-columns:1fr 1fr;}
+  .footer-top > *:first-child{grid-column:span 2;}
+}
+@media(max-width:768px){
+  .nav-links,.nav-cta{display:none;}
+  .hamburger{display:flex;}
+  .about-grid,.contact-grid{grid-template-columns:1fr;}
+  .about-img-wrap{aspect-ratio:16/9;}
+  .about-img{aspect-ratio:16/9;}
+  .gallery-grid{grid-template-columns:1fr 1fr;}
+  .gal-item:nth-child(1){grid-row:auto;}
+  .gal-item:nth-child(4){grid-column:auto;}
+  .stats-inner{grid-template-columns:repeat(2,1fr);}
+  .footer-top{grid-template-columns:1fr;}
+  .footer-top > *:first-child{grid-column:auto;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+  section{padding:56px 0;}
+}
+@media(max-width:480px){
+  .hero-btns{flex-direction:column;align-items:stretch;}
+  .btn-primary,.btn-wa{text-align:center;justify-content:center;}
+  .gallery-grid{grid-template-columns:1fr;}
+  .gal-item:nth-child(1) .gal-img{min-height:260px;}
+  .about-features{grid-template-columns:1fr;}
+  .stats-inner{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">SRINIDHI VEG</div>
+  <div class="loader-sub">South Indian Restaurant</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- MOBILE OVERLAY -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+
+<!-- MOBILE MENU -->
+<nav class="mobile-menu" id="mobileMenu">
+  <a class="mobile-link" href="#home" onclick="closeMobileMenu()">🏠 Home</a>
+  <a class="mobile-link" href="#about" onclick="closeMobileMenu()">ℹ️ About</a>
+  <a class="mobile-link" href="#menu" onclick="closeMobileMenu()">🍽️ Menu</a>
+  <a class="mobile-link" href="#gallery" onclick="closeMobileMenu()">🖼️ Gallery</a>
+  <a class="mobile-link" href="#reviews" onclick="closeMobileMenu()">⭐ Reviews</a>
+  <a class="mobile-link" href="#contact" onclick="closeMobileMenu()">📞 Contact</a>
+</nav>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">
+      <div class="nav-logo-name">🍃 Srinidhi Veg</div>
+      <div class="nav-logo-tag">South Indian Restaurant</div>
+    </a>
+    <div class="nav-links">
+      <a href="#home"    class="nav-link active">Home</a>
+      <a href="#about"   class="nav-link">About</a>
+      <a href="#menu"    class="nav-link">Menu</a>
+      <a href="#gallery" class="nav-link">Gallery</a>
+      <a href="#reviews" class="nav-link">Reviews</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+    <a href="https://wa.me/919999999999?text=Hello%20Srinidhi%20Veg%20I%20want%20to%20order" target="_blank" class="nav-cta">Order Now 🛒</a>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Pure Vegetarian Since 2010
+    </div>
+    <h1 class="hero-title">
+      Authentic <span>South Indian</span> Taste
+    </h1>
+    <p class="hero-sub">
+      Experience the rich flavors of traditional South Indian cuisine — freshly made, lovingly served, and perfectly priced for every family.
+    </p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary">🍽️ View Menu</a>
+      <a href="https://wa.me/919999999999?text=Hello%20Srinidhi%20Veg%20I%20want%20to%20order" target="_blank" class="btn-wa">
+        <span class="wa-icon">💬</span> Order on WhatsApp
+      </a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-mouse"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item fade-up">
+      <div class="stat-num">15+</div>
+      <div class="stat-label">Years Serving</div>
+    </div>
+    <div class="stat-item fade-up delay-1">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Menu Items</div>
+    </div>
+    <div class="stat-item fade-up delay-2">
+      <div class="stat-num">500+</div>
+      <div class="stat-label">Happy Customers Daily</div>
+    </div>
+    <div class="stat-item fade-up delay-3">
+      <div class="stat-num">4.8★</div>
+      <div class="stat-label">Average Rating</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="fade-left">
+        <div class="about-img-wrap">
+          <div class="about-img">🍽️</div>
+          <div class="about-img-label">
+            <strong>100%</strong>
+            <span>Pure Vegetarian</span>
+          </div>
+        </div>
+      </div>
+      <div class="fade-right">
+        <div class="section-tag">Our Story</div>
+        <h2 class="section-title">Why Srinidhi Veg is <span>Special</span></h2>
+        <div class="divider"></div>
+        <p class="section-sub">
+          Serving authentic South Indian vegetarian food since 2010, we bring you the true taste of tradition — prepared fresh every morning with the finest ingredients.
+        </p>
+        <div class="about-features">
+          <div class="feat-card">
+            <div class="feat-icon">⚡</div>
+            <div class="feat-title">Quick Breakfast</div>
+            <div class="feat-desc">Ready in minutes. Perfect for busy mornings.</div>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon">🍛</div>
+            <div class="feat-title">South Indian Food</div>
+            <div class="feat-desc">Authentic recipes passed down through generations.</div>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon">💰</div>
+            <div class="feat-title">Affordable Prices</div>
+            <div class="feat-desc">Great taste doesn't have to cost a fortune.</div>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon">👨‍👩‍👧</div>
+            <div class="feat-title">Family Friendly</div>
+            <div class="feat-desc">Welcoming atmosphere for everyone.</div>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon">🙋</div>
+            <div class="feat-title">Self-Service</div>
+            <div class="feat-desc">Convenient, fast, and comfortable.</div>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon">✨</div>
+            <div class="feat-title">Hygienic Food</div>
+            <div class="feat-desc">Prepared in a clean, certified kitchen.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="section-inner">
+    <div class="text-center fade-up">
+      <div class="section-tag">Our Menu</div>
+      <h2 class="section-title">Popular <span>Dishes</span></h2>
+      <div class="divider center"></div>
+      <p class="section-sub">Freshly prepared every day with traditional recipes and the finest ingredients.</p>
+    </div>
+
+    <div class="menu-grid">
+      <!-- Idli -->
+      <div class="menu-card fade-up">
+        <div class="menu-img" style="background:linear-gradient(135deg,#f0e8d0,#e8ddb8);">
+          🥟
+          <div class="menu-badge">Bestseller</div>
+        </div>
+        <div class="menu-body">
+          <div class="menu-name">Idli (2 pcs)</div>
+          <div class="menu-desc">Soft, fluffy steamed rice cakes served with sambar and fresh coconut chutney.</div>
+          <div class="menu-footer">
+            <div class="menu-price">₹30 <span>per plate</span></div>
+            <button class="menu-order" onclick="orderItem('Idli')">Order ›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Masala Dosa -->
+      <div class="menu-card fade-up delay-1">
+        <div class="menu-img" style="background:linear-gradient(135deg,#f5e8c0,#e8d090);">
+          🫓
+          <div class="menu-badge">Popular</div>
+        </div>
+        <div class="menu-body">
+          <div class="menu-name">Masala Dosa</div>
+          <div class="menu-desc">Crispy golden crepe stuffed with spiced potato masala, served with sambar & chutneys.</div>
+          <div class="menu-footer">
+            <div class="menu-price">₹55 <span>per plate</span></div>
+            <button class="menu-order" onclick="orderItem('Masala Dosa')">Order ›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mushroom Pulao -->
+      <div class="menu-card fade-up delay-2">
+        <div class="menu-img" style="background:linear-gradient(135deg,#e8f0d8,#d0e8b8);">
+          🍚
+        </div>
+        <div class="menu-body">
+          <div class="menu-name">Mushroom Pulao</div>
+          <div class="menu-desc">Aromatic basmati rice cooked with fresh mushrooms and fragrant spices.</div>
+          <div class="menu-footer">
+            <div class="menu-price">₹80 <span>per plate</span></div>
+            <button class="menu-order" onclick="orderItem('Mushroom Pulao')">Order ›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vada -->
+      <div class="menu-card fade-up delay-3">
+        <div class="menu-img" style="background:linear-gradient(135deg,#f5e0c0,#e8c890);">
+          🍩
+        </div>
+        <div class="menu-body">
+          <div class="menu-name">Medu Vada (2 pcs)</div>
+          <div class="menu-desc">Crispy urad dal fritters with a fluffy center, served with sambar and chutney.</div>
+          <div class="menu-footer">
+            <div class="menu-price">₹35 <span>per plate</span></div>
+            <button class="menu-order" onclick="orderItem('Vada')">Order ›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coffee -->
+      <div class="menu-card fade-up delay-4">
+        <div class="menu-img" style="background:linear-gradient(135deg,#e8d0b8,#d0b890);">
+          ☕
+        </div>
+        <div class="menu-body">
+          <div class="menu-name">Filter Coffee</div>
+          <div class="menu-desc">Traditional South Indian filter coffee, frothy, rich, and perfectly sweetened.</div>
+          <div class="menu-footer">
+            <div class="menu-price">₹20 <span>per cup</span></div>
+            <button class="menu-order" onclick="orderItem('Filter Coffee')">Order ›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Veg Meals -->
+      <div class="menu-card fade-up delay-5">
+        <div class="menu-img" style="background:linear-gradient(135deg,#d8e8d0,#b8d8a8);">
+          🍱
+          <div class="menu-badge">Value</div>
+        </div>
+        <div class="menu-body">
+          <div class="menu-name">Veg Meals (Full)</div>
+          <div class="menu-desc">Complete South Indian thali — rice, sambar, rasam, kootu, papad, and payasam.</div>
+          <div class="menu-footer">
+            <div class="menu-price">₹120 <span>per thali</span></div>
+            <button class="menu-order" onclick="orderItem('Veg Meals')">Order ›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="text-center fade-up">
+      <div class="section-tag">Gallery</div>
+      <h2 class="section-title">A Taste Through <span>Our Lens</span></h2>
+      <div class="divider center"></div>
+    </div>
+    <div class="gallery-grid">
+      <div class="gal-item fade-up">
+        <div class="gal-img" style="background:linear-gradient(135deg,#2d6a2d,#4a9a4a);">🍽️</div>
+        <div class="gal-overlay"><div class="gal-label">Our Restaurant</div></div>
+      </div>
+      <div class="gal-item fade-up delay-1">
+        <div class="gal-img" style="background:linear-gradient(135deg,#f5e0c0,#e8c890);">🥟</div>
+        <div class="gal-overlay"><div class="gal-label">Fresh Idli</div></div>
+      </div>
+      <div class="gal-item fade-up delay-2">
+        <div class="gal-img" style="background:linear-gradient(135deg,#e8d090,#d8b870);">🫓</div>
+        <div class="gal-overlay"><div class="gal-label">Crispy Dosa</div></div>
+      </div>
+      <div class="gal-item fade-up delay-3">
+        <div class="gal-img" style="background:linear-gradient(135deg,#d0e8b0,#b0d090);">🍱</div>
+        <div class="gal-overlay"><div class="gal-label">Veg Meals</div></div>
+      </div>
+      <div class="gal-item fade-up delay-4">
+        <div class="gal-img" style="background:linear-gradient(135deg,#e8d0b0,#d0b888);">☕</div>
+        <div class="gal-overlay"><div class="gal-label">Filter Coffee</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-inner">
+    <div class="text-center fade-up">
+      <div class="section-tag">Testimonials</div>
+      <h2 class="section-title">What Our <span>Customers Say</span></h2>
+      <div class="divider center"></div>
+      <p class="section-sub">Real reviews from our happy regulars.</p>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card fade-up delay-1">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Perfect place for quick breakfast and coffee. The idli is super soft and the filter coffee is just like home. I visit every morning before work!"</div>
+        <div class="review-author">
+          <div class="review-avatar">R</div>
+          <div>
+            <div class="review-name">Rajesh Kumar</div>
+            <div class="review-date">Regular Customer · Google Review</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card fade-up delay-2">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Food is tasty and prices are very reasonable. The masala dosa is crispy and the sambar is delicious. Best value breakfast in the area, highly recommend!"</div>
+        <div class="review-author">
+          <div class="review-avatar">P</div>
+          <div>
+            <div class="review-name">Priya Sharma</div>
+            <div class="review-date">Family Visit · Google Review</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card fade-up delay-3">
+        <div class="review-stars">★★★★☆</div>
+        <div class="review-text">"Good South Indian breakfast and snacks. The vada is crispy and fresh. Very hygienic kitchen and friendly service. Veg meals are wholesome and filling."</div>
+        <div class="review-author">
+          <div class="review-avatar">A</div>
+          <div>
+            <div class="review-name">Anand Murthy</div>
+            <div class="review-date">Frequent Visitor · Google Review</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section id="map-section">
+  <div class="section-inner">
+    <div class="text-center fade-up">
+      <div class="section-tag">Find Us</div>
+      <h2 class="section-title">Visit Our <span>Restaurant</span></h2>
+      <div class="divider center"></div>
+    </div>
+    <div class="map-wrap fade-up">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3897.5!2d77.5946!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU4JzE3LjgiTiA3N8KwMzUnNDAuNiJF!5e0!3m2!1sen!2sin!4v1234567890"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Srinidhi Veg Location">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="fade-left">
+        <div class="section-tag">Contact Us</div>
+        <h2 class="section-title">Get In <span>Touch</span></h2>
+        <div class="divider"></div>
+        <p class="section-sub">We'd love to hear from you. Visit us or reach out anytime!</p>
+        <div class="contact-info-cards">
+          <div class="info-card">
+            <div class="info-icon">📍</div>
+            <div>
+              <div class="info-label">Address</div>
+              <div class="info-val">12, Main Road, Near Bus Stand<br/>Your City – 560001, Karnataka</div>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">🕐</div>
+            <div>
+              <div class="info-label">Opening Hours</div>
+              <div class="info-val">Monday – Sunday<br/>6:00 AM – 10:00 PM</div>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">📞</div>
+            <div>
+              <div class="info-label">Phone</div>
+              <div class="info-val">+91 99999 99999<br/>+91 88888 88888</div>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">✉️</div>
+            <div>
+              <div class="info-label">Email</div>
+              <div class="info-val">srinidhiveg@gmail.com</div>
+            </div>
+          </div>
+        </div>
+        <a href="https://wa.me/919999999999?text=Hello%20Srinidhi%20Veg!" target="_blank" class="btn-whatsapp" style="margin-top:24px;display:inline-flex;width:auto;">
+          💬 Chat on WhatsApp
+        </a>
+      </div>
+
+      <div class="fade-right">
+        <div class="contact-form-card">
+          <div class="form-title">Send a Message</div>
+          <div class="form-sub">We'll get back to you within a few hours.</div>
+          <form onsubmit="submitForm(event)">
+            <div class="form-group">
+              <label class="form-label">Your Name</label>
+              <input class="form-input" type="text" placeholder="Enter your name" required/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input class="form-input" type="tel" placeholder="+91 XXXXX XXXXX"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input class="form-input" type="email" placeholder="your@email.com"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message</label>
+              <textarea class="form-textarea" placeholder="Your message here…" required></textarea>
+            </div>
+            <button type="submit" class="form-submit">Send Message ›</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">🍃 Srinidhi Veg</div>
+        <div class="footer-brand-tag">Authentic South Indian Restaurant</div>
+        <p class="footer-brand-desc">Serving the authentic taste of South India since 2010. Pure vegetarian, fresh every day, and made with love for your family.</p>
+        <div class="social-row">
+          <a href="#" class="social-btn" aria-label="Facebook">📘</a>
+          <a href="#" class="social-btn" aria-label="Instagram">📸</a>
+          <a href="#" class="social-btn" aria-label="YouTube">▶️</a>
+          <a href="https://wa.me/919999999999" target="_blank" class="social-btn" aria-label="WhatsApp">💬</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Quick Links</div>
+        <div class="footer-links">
+          <a href="#home"    class="footer-link">Home</a>
+          <a href="#about"   class="footer-link">About Us</a>
+          <a href="#menu"    class="footer-link">Our Menu</a>
+          <a href="#gallery" class="footer-link">Gallery</a>
+          <a href="#reviews" class="footer-link">Reviews</a>
+          <a href="#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Contact</div>
+        <div class="footer-links">
+          <div class="footer-link">📍 12, Main Road, Your City</div>
+          <div class="footer-link">🕐 6:00 AM – 10:00 PM</div>
+          <div class="footer-link">📞 +91 99999 99999</div>
+          <div class="footer-link">✉️ srinidhiveg@gmail.com</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 Srinidhi Veg. All rights reserved.</div>
+      <div class="footer-credit">Website Designed by <strong>Anni Web Studio</strong></div>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<a href="https://wa.me/919999999999?text=Hello%20Srinidhi%20Veg%20I%20want%20to%20order" target="_blank" class="float-wa" title="Order on WhatsApp">💬</a>
+<button class="float-top" id="floatTop" onclick="scrollToTop()" title="Back to top">↑</button>
+
+<script>
+/* ===== LOADER ===== */
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("loader").classList.add("hidden");
+  }, 2000);
+});
+
+/* ===== NAVBAR SCROLL ===== */
+const navbar = document.getElementById("navbar");
+const floatTop = document.getElementById("floatTop");
+
+window.addEventListener("scroll", () => {
+  const scrollY = window.scrollY;
+
+  // Navbar style
+  if (scrollY > 60) {
+    navbar.classList.add("scrolled");
+  } else {
+    navbar.classList.remove("scrolled");
+  }
+
+  // Scroll-to-top button
+  if (scrollY > 400) {
+    floatTop.classList.add("show");
+  } else {
+    floatTop.classList.remove("show");
+  }
+
+  // Active nav link
+  updateActiveNavLink();
+
+  // Animate on scroll
+  animateOnScroll();
+});
+
+/* ===== ACTIVE NAV LINK ===== */
+function updateActiveNavLink() {
+  const sections = ["home","about","menu","gallery","reviews","map-section","contact"];
+  const scrollY = window.scrollY + 100;
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const top = el.offsetTop;
+    const bottom = top + el.offsetHeight;
+    if (scrollY >= top && scrollY < bottom) {
+      document.querySelectorAll(".nav-link").forEach(link => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === "#" + id) {
+          link.classList.add("active");
+        }
+      });
+    }
+  });
+}
+
+/* ===== MOBILE MENU ===== */
+function toggleMobileMenu() {
+  const menu = document.getElementById("mobileMenu");
+  const overlay = document.getElementById("mobileOverlay");
+  const hamburger = document.getElementById("hamburger");
+  menu.classList.toggle("open");
+  overlay.classList.toggle("open");
+  hamburger.classList.toggle("open");
+}
+
+function closeMobileMenu() {
+  document.getElementById("mobileMenu").classList.remove("open");
+  document.getElementById("mobileOverlay").classList.remove("open");
+  document.getElementById("hamburger").classList.remove("open");
+}
+
+/* ===== SCROLL TO TOP ===== */
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ===== ANIMATE ON SCROLL ===== */
+function animateOnScroll() {
+  const elements = document.querySelectorAll(".fade-up,.fade-left,.fade-right");
+  const windowHeight = window.innerHeight;
+
+  elements.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < windowHeight - 80) {
+      el.classList.add("visible");
+    }
+  });
+}
+
+// Run once on load
+animateOnScroll();
+
+/* ===== ORDER ITEM (WhatsApp) ===== */
+function orderItem(itemName) {
+  const msg = encodeURIComponent(`Hello Srinidhi Veg! I'd like to order: ${itemName}`);
+  window.open(`https://wa.me/919999999999?text=${msg}`, "_blank");
+}
+
+/* ===== FORM SUBMIT ===== */
+function submitForm(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector(".form-submit");
+  const original = btn.textContent;
+  btn.textContent = "✓ Message Sent!";
+  btn.style.background = "linear-gradient(135deg,#2d9a4a,#3dba5a)";
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.style.background = "";
+    e.target.reset();
+  }, 3000);
+}
+
+/* ===== CLOSE MENU ON RESIZE ===== */
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 768) closeMobileMenu();
+});
+
+/* ===== SMOOTH SCROLL OFFSET ===== */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", function(e) {
+    const target = document.querySelector(this.getAttribute("href"));
+    if (target) {
+      e.preventDefault();
+      const offset = 80;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  });
+});
+</script>
+</body>
+</html>
