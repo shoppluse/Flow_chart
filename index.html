@@ -5,811 +5,511 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flowchart Developer</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&display=swap');
 
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --panel: #16161f;
-    --border: #2a2a3a;
-    --accent: #00e5ff;
-    --accent2: #b57bee;
-    --accent3: #39ff88;
-    --text: #e8e8f0;
-    --muted: #6b6b88;
-    --node-process: #1a2a3a;
-    --node-decision: #1e1a2e;
-    --node-terminal: #0d1f1a;
-    --node-io: #1f1a10;
-    --border-process: #00e5ff;
-    --border-decision: #b57bee;
-    --border-terminal: #39ff88;
-    --border-io: #ffb830;
-  }
+:root {
+  --bg: #f5f0e8;
+  --surface: #ede8df;
+  --panel: #e8e2d8;
+  --border: #c8bfad;
+  --ink: #1a1610;
+  --muted: #7a6e60;
+  --accent: #c0392b;
+  --accent2: #2c7a4b;
+  --accent3: #1a5276;
+  --accent4: #7d3c98;
+  --gold: #b7860b;
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Fraunces', serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-  /* HEADER */
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 28px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    z-index: 10;
-    flex-shrink: 0;
-  }
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 28px;
+  border-bottom: 2px solid var(--ink);
+  background: var(--surface);
+  flex-shrink: 0;
+}
 
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+.logo { display: flex; align-items: baseline; gap: 10px; }
+.logo-title { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.03em; }
+.logo-title em { font-style: italic; color: var(--accent); }
+.logo-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid var(--border); padding: 2px 7px; border-radius: 2px;
+}
+.header-right {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem; color: var(--muted); text-align: right; line-height: 1.6;
+}
 
-  .logo-icon {
-    width: 34px; height: 34px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-  }
+.app { display: flex; flex: 1; overflow: hidden; height: calc(100vh - 57px); }
 
-  .logo-text {
-    font-size: 1.1rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
+.input-panel {
+  width: 380px; flex-shrink: 0;
+  display: flex; flex-direction: column;
+  border-right: 2px solid var(--ink);
+  background: var(--panel);
+}
 
-  .logo-text span { color: var(--accent); }
+.panel-header {
+  padding: 12px 18px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.hint { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border); padding: 2px 7px; border-radius: 2px; }
 
-  .header-badges {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
+textarea {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: var(--ink); font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem; line-height: 1.75; padding: 18px; resize: none;
+  caret-color: var(--accent);
+}
+textarea::placeholder { color: var(--muted); font-style: italic; font-family: 'Fraunces', serif; font-size: 0.88rem; }
 
-  .badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    padding: 3px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
+.input-footer { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+.footer-row { display: flex; align-items: center; justify-content: space-between; }
+.char-count { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--muted); }
 
-  .badge.live { border-color: var(--accent3); color: var(--accent3); }
+.mode-select { display: flex; gap: 4px; }
+.mode-btn {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
+  padding: 3px 9px; border-radius: 2px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--muted); cursor: pointer;
+  transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.mode-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
-  /* MAIN LAYOUT */
-  .app {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-    height: calc(100vh - 61px);
-  }
+.generate-btn {
+  background: var(--ink); color: var(--bg); border: none;
+  padding: 11px 18px; border-radius: 3px;
+  font-family: 'Fraunces', serif; font-weight: 700; font-size: 0.95rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  gap: 8px; transition: all 0.15s; letter-spacing: -0.01em;
+}
+.generate-btn:hover { background: var(--accent); }
 
-  /* LEFT PANEL */
-  .input-panel {
-    width: 360px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid var(--border);
-    background: var(--panel);
-  }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 18px; border-top: 1px solid var(--border); }
+.legend-item { display: flex; align-items: center; gap: 5px; font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--muted); }
+.legend-dot { width: 12px; height: 12px; border: 1.5px solid; flex-shrink: 0; }
 
-  .panel-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 14px 20px 10px;
-    border-bottom: 1px solid var(--border);
-  }
+.canvas-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.canvas-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 18px; border-bottom: 1px solid var(--border);
+  background: var(--surface); flex-shrink: 0;
+}
+.toolbar-btns { display: flex; gap: 5px; }
+.tool-btn {
+  background: var(--panel); border: 1px solid var(--border); color: var(--ink);
+  padding: 5px 11px; border-radius: 2px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem;
+  cursor: pointer; transition: all 0.12s; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.tool-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.node-count { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--muted); }
 
-  textarea {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    font-size: 0.97rem;
-    line-height: 1.7;
-    padding: 20px;
-    resize: none;
-    caret-color: var(--accent);
-  }
+#flow-container {
+  flex: 1; overflow: auto;
+  background:
+    linear-gradient(rgba(200,191,173,0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,191,173,0.3) 1px, transparent 1px),
+    var(--bg);
+  background-size: 30px 30px;
+  position: relative;
+}
+#flow-container::-webkit-scrollbar { width: 6px; height: 6px; }
+#flow-container::-webkit-scrollbar-track { background: var(--bg); }
+#flow-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+#flowchart-svg { display: block; }
 
-  textarea::placeholder { color: var(--muted); }
+.empty-state {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; pointer-events: none;
+}
+.empty-icon { font-size: 2.5rem; opacity: 0.15; }
+.empty-text { font-size: 1.1rem; font-weight: 700; color: var(--muted); letter-spacing: -0.02em; }
+.empty-sub { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--muted); opacity: 0.6; }
 
-  .input-footer {
-    padding: 16px 20px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+.tooltip {
+  position: fixed; background: var(--ink); color: var(--bg);
+  border-radius: 3px; padding: 8px 12px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem;
+  pointer-events: none; opacity: 0; transition: opacity 0.15s;
+  z-index: 999; max-width: 280px; line-height: 1.5;
+}
+.tooltip.visible { opacity: 1; }
 
-  .char-count {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    text-align: right;
-  }
-
-  .generate-btn {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-    color: #000;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: opacity 0.2s, transform 0.15s;
-    letter-spacing: 0.02em;
-  }
-
-  .generate-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-  .generate-btn:active { transform: translateY(0); }
-  .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-  .btn-spinner {
-    width: 14px; height: 14px;
-    border: 2px solid rgba(0,0,0,0.3);
-    border-top-color: #000;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    display: none;
-  }
-
-  .loading .btn-spinner { display: block; }
-  .loading .btn-text { display: none; }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* EXAMPLES */
-  .examples {
-    padding: 12px 20px 0;
-  }
-
-  .examples-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .example-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .chip {
-    font-size: 0.72rem;
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: 'JetBrains Mono', monospace;
-    background: var(--surface);
-  }
-
-  .chip:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* CANVAS AREA */
-  .canvas-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .canvas-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    flex-shrink: 0;
-  }
-
-  .toolbar-left {
-    display: flex;
-    gap: 6px;
-  }
-
-  .tool-btn {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .tool-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  .legend {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--muted);
-  }
-
-  .legend-dot {
-    width: 10px; height: 10px;
-    border-radius: 2px;
-    border: 1.5px solid;
-  }
-
-  /* FLOWCHART SVG CANVAS */
-  #flow-container {
-    flex: 1;
-    overflow: auto;
-    background:
-      radial-gradient(ellipse at 20% 30%, rgba(0,229,255,0.04) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 70%, rgba(181,123,238,0.04) 0%, transparent 60%),
-      var(--bg);
-    position: relative;
-  }
-
-  #flow-container::-webkit-scrollbar { width: 6px; height: 6px; }
-  #flow-container::-webkit-scrollbar-track { background: var(--bg); }
-  #flow-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-  /* DOT GRID */
-  #flow-container::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
-    background-size: 28px 28px;
-    pointer-events: none;
-  }
-
-  #flowchart-svg {
-    display: block;
-    min-width: 100%;
-    min-height: 100%;
-  }
-
-  /* EMPTY STATE */
-  .empty-state {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    pointer-events: none;
-  }
-
-  .empty-icon {
-    font-size: 3rem;
-    opacity: 0.18;
-  }
-
-  .empty-text {
-    font-size: 1rem;
-    color: var(--muted);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-
-  .empty-sub {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--muted);
-    opacity: 0.6;
-  }
-
-  /* NODE STYLES in SVG */
-  .node-rect { filter: drop-shadow(0 2px 12px rgba(0,0,0,0.4)); cursor: pointer; }
-  .node-text { font-family: 'Syne', sans-serif; font-size: 13px; fill: #e8e8f0; font-weight: 600; }
-  .node-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #6b6b88; }
-  .edge-path { fill: none; stroke-width: 1.8; marker-end: url(#arrowhead); }
-  .edge-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; }
-
-  /* TOOLTIP */
-  .tooltip {
-    position: fixed;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 0.78rem;
-    color: var(--text);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.15s;
-    z-index: 100;
-    max-width: 220px;
-    line-height: 1.5;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .tooltip.visible { opacity: 1; }
-
-  /* ANIMATE IN */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .node-group { animation: fadeInUp 0.35s ease both; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.node-g { animation: fadeUp 0.3s ease both; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">
-    <div class="logo-icon">◈</div>
-    <div class="logo-text">Flow<span>Chart</span> Dev</div>
+    <div class="logo-title">Flow<em>Chart</em> Dev</div>
+    <div class="logo-sub">No-API · Offline</div>
   </div>
-  <div class="header-badges">
-    <div class="badge live">● LIVE</div>
-    <div class="badge">AI-POWERED</div>
-    <div class="badge">v1.0</div>
+  <div class="header-right">
+    Paste study text → instant flowchart<br>
+    Ctrl+Enter to generate
   </div>
 </header>
 
 <div class="app">
-
-  <!-- LEFT: INPUT -->
   <div class="input-panel">
-    <div class="panel-label">// INPUT STATEMENT</div>
-
-    <div class="examples">
-      <div class="examples-label">Try an example</div>
-      <div class="example-chips">
-        <div class="chip" onclick="setExample(this)">Login System</div>
-        <div class="chip" onclick="setExample(this)">Bubble Sort</div>
-        <div class="chip" onclick="setExample(this)">ATM Machine</div>
-        <div class="chip" onclick="setExample(this)">TCP Handshake</div>
-        <div class="chip" onclick="setExample(this)">Order Checkout</div>
-      </div>
+    <div class="panel-header">
+      <div class="panel-title">// Your Study Text</div>
+      <div class="hint">Ctrl+Enter</div>
     </div>
 
-    <textarea id="user-input" placeholder="Describe any concept, algorithm, process, or system...
+    <textarea id="user-input" maxlength="20000"
+      placeholder="Paste your study material here...
 
-Examples:
-• How does JWT authentication work?
-• Explain the binary search algorithm
-• What happens when you type a URL?
-• How does a database transaction work?" maxlength="2000000"></textarea>
+Works best with:
+• Numbered steps  1. Do this  2. Then that
+• Bullet points   • Step one  • Step two
+• Keywords: IF, THEN, ELSE, WHEN, FIRST, NEXT, FINALLY
+• Plain paragraphs of theory
+• Mixed content
+
+Example:
+1. User opens the app
+2. IF user is logged in THEN go to dashboard
+3. ELSE show login form
+4. User enters credentials
+5. IF valid THEN create session
+6. ELSE show error"></textarea>
 
     <div class="input-footer">
-      <div class="char-count"><span id="char-num">0</span> / 2000000</div>
-      <button class="generate-btn" id="gen-btn" onclick="generateFlowchart()">
-        <div class="btn-spinner"></div>
-        <span class="btn-text">⟶ Generate Flowchart</span>
-      </button>
+      <div class="footer-row">
+        <div class="char-count"><span id="char-num">0</span> / 20000</div>
+        <div class="mode-select">
+          <button class="mode-btn active" id="mode-auto"  onclick="setMode('auto')">Auto</button>
+          <button class="mode-btn"        id="mode-steps" onclick="setMode('steps')">Steps</button>
+          <button class="mode-btn"        id="mode-para"  onclick="setMode('para')">Para</button>
+        </div>
+      </div>
+      <button class="generate-btn" onclick="generateFlowchart()">◈ Build Flowchart</button>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="border-color:#c0392b;background:rgba(192,57,43,0.1);border-radius:50%"></div>Start/End</div>
+      <div class="legend-item"><div class="legend-dot" style="border-color:#1a5276;background:rgba(26,82,118,0.1)"></div>Process</div>
+      <div class="legend-item"><div class="legend-dot" style="border-color:#2c7a4b;background:rgba(44,122,75,0.1);transform:rotate(45deg)"></div>Decision</div>
+      <div class="legend-item"><div class="legend-dot" style="border-color:#7d3c98;background:rgba(125,60,152,0.1);transform:skewX(-8deg)"></div>I/O</div>
     </div>
   </div>
 
-  <!-- RIGHT: CANVAS -->
   <div class="canvas-area">
     <div class="canvas-toolbar">
-      <div class="toolbar-left">
-        <button class="tool-btn" onclick="zoomIn()">＋ Zoom</button>
-        <button class="tool-btn" onclick="zoomOut()">－ Zoom</button>
-        <button class="tool-btn" onclick="resetZoom()">⊙ Reset</button>
-        <button class="tool-btn" onclick="downloadSVG()">↓ Export SVG</button>
+      <div class="toolbar-btns">
+        <button class="tool-btn" onclick="zoomIn()">+ Zoom</button>
+        <button class="tool-btn" onclick="zoomOut()">− Zoom</button>
+        <button class="tool-btn" onclick="resetZoom()">⊙ Fit</button>
+        <button class="tool-btn" onclick="downloadSVG()">↓ SVG</button>
+        <button class="tool-btn" onclick="clearChart()">✕ Clear</button>
       </div>
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="border-color:#00e5ff; background:rgba(0,229,255,0.15)"></div>Process</div>
-        <div class="legend-item"><div class="legend-dot" style="border-color:#b57bee; background:rgba(181,123,238,0.15); transform:rotate(45deg)"></div>Decision</div>
-        <div class="legend-item"><div class="legend-dot" style="border-color:#39ff88; background:rgba(57,255,136,0.15); border-radius:50%"></div>Start/End</div>
-        <div class="legend-item"><div class="legend-dot" style="border-color:#ffb830; background:rgba(255,184,48,0.15); transform:skewX(-8deg)"></div>I/O</div>
-      </div>
+      <div class="node-count" id="node-count"></div>
     </div>
 
     <div id="flow-container">
       <div class="empty-state" id="empty-state">
         <div class="empty-icon">◈</div>
-        <div class="empty-text">Your flowchart appears here</div>
-        <div class="empty-sub">Type a concept → Generate</div>
+        <div class="empty-text">Paste text, build flowchart</div>
+        <div class="empty-sub">No AI · No API · Fully offline</div>
       </div>
       <svg id="flowchart-svg" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
   </div>
-
 </div>
 
 <div class="tooltip" id="tooltip"></div>
 
 <script>
-// ─── STATE ───────────────────────────────────────────────────────────────────
-let currentZoom = 1;
-let svgData = null;
+let zoom = 1, svgString = '', parseMode = 'auto';
+const inputEl = document.getElementById('user-input');
+const svgEl   = document.getElementById('flowchart-svg');
+const emptyEl = document.getElementById('empty-state');
+const tipEl   = document.getElementById('tooltip');
 
-const input = document.getElementById('user-input');
-const genBtn = document.getElementById('gen-btn');
-const svg = document.getElementById('flowchart-svg');
-const emptyState = document.getElementById('empty-state');
-const tooltip = document.getElementById('tooltip');
-
-input.addEventListener('input', () => {
-  document.getElementById('char-num').textContent = input.value.length;
+inputEl.addEventListener('input', () => {
+  document.getElementById('char-num').textContent = inputEl.value.length;
 });
 
-// ─── EXAMPLES ────────────────────────────────────────────────────────────────
-const examples = {
-  'Login System': 'Explain how a user login and authentication system works, including username/password validation, session creation, and handling failed attempts.',
-  'Bubble Sort': 'Explain the bubble sort algorithm step by step — how it compares adjacent elements, swaps them if out of order, and repeats until the array is sorted.',
-  'ATM Machine': 'How does an ATM machine work? Explain the process from inserting a card to dispensing cash, including PIN verification and balance checks.',
-  'TCP Handshake': 'Explain the TCP three-way handshake process used to establish a connection between client and server.',
-  'Order Checkout': 'Explain the e-commerce order checkout process from cart review to payment processing and order confirmation.'
-};
-
-function setExample(el) {
-  input.value = examples[el.textContent];
-  document.getElementById('char-num').textContent = input.value.length;
+function setMode(m) {
+  parseMode = m;
+  ['auto','steps','para'].forEach(x =>
+    document.getElementById('mode-'+x).classList.toggle('active', x === m));
 }
 
-// ─── ZOOM ─────────────────────────────────────────────────────────────────────
-function zoomIn() { currentZoom = Math.min(currentZoom + 0.2, 3); applyZoom(); }
-function zoomOut() { currentZoom = Math.max(currentZoom - 0.2, 0.3); applyZoom(); }
-function resetZoom() { currentZoom = 1; applyZoom(); }
-function applyZoom() {
-  svg.style.transform = `scale(${currentZoom})`;
-  svg.style.transformOrigin = 'top left';
+function zoomIn()   { zoom = Math.min(zoom+0.15, 3);   applyZoom(); }
+function zoomOut()  { zoom = Math.max(zoom-0.15, 0.2); applyZoom(); }
+function resetZoom(){ zoom = 1; applyZoom(); }
+function applyZoom(){ svgEl.style.transform = `scale(${zoom})`; svgEl.style.transformOrigin = 'top left'; }
+
+function clearChart() {
+  svgEl.innerHTML = ''; emptyEl.style.display = 'flex';
+  document.getElementById('node-count').textContent = ''; svgString = '';
 }
 
-// ─── DOWNLOAD ─────────────────────────────────────────────────────────────────
 function downloadSVG() {
-  if (!svgData) return;
-  const blob = new Blob([svgData], { type: 'image/svg+xml' });
-  const url = URL.createObjectURL(blob);
+  if (!svgString) return;
   const a = document.createElement('a');
-  a.href = url; a.download = 'flowchart.svg'; a.click();
-  URL.revokeObjectURL(url);
+  a.href = URL.createObjectURL(new Blob([svgString], {type:'image/svg+xml'}));
+  a.download = 'flowchart.svg'; a.click();
 }
 
-// ─── TOOLTIP ──────────────────────────────────────────────────────────────────
-function showTooltip(e, text) {
-  tooltip.textContent = text;
-  tooltip.classList.add('visible');
-  moveTooltip(e);
-}
-function moveTooltip(e) {
-  tooltip.style.left = (e.clientX + 14) + 'px';
-  tooltip.style.top = (e.clientY - 10) + 'px';
-}
-function hideTooltip() { tooltip.classList.remove('visible'); }
+function showTip(e,t){ tipEl.textContent=t; tipEl.classList.add('visible'); moveTip(e); }
+function moveTip(e)  { tipEl.style.left=(e.clientX+14)+'px'; tipEl.style.top=(e.clientY-8)+'px'; }
+function hideTip()   { tipEl.classList.remove('visible'); }
 
-// ─── PARSE AI RESPONSE ────────────────────────────────────────────────────────
-function parseNodes(text) {
-  // Extract JSON from AI response
-  const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/) ||
-                    text.match(/\{[\s\S]*"nodes"[\s\S]*\}/);
-  if (jsonMatch) {
-    try {
-      const raw = jsonMatch[1] || jsonMatch[0];
-      return JSON.parse(raw);
-    } catch(e) {}
+// ── PARSER ────────────────────────────────────────────────────────────────────
+const RX_DECISION = /\b(if|else|elif|otherwise|when|unless|whether|check|verify|validate|is|are|does|do|can|should|might|either|case|switch)\b/i;
+const RX_IO       = /\b(input|output|read|write|display|show|print|prompt|enter|type|receive|send|return|get|fetch|load|save|store|log)\b/i;
+const RX_TERMINAL = /\b(start|begin|end|stop|finish|terminate|exit|done|complete|halt|launch|initiate)\b/i;
+
+function detectType(text) {
+  if (RX_TERMINAL.test(text)) return 'terminal';
+  if (RX_DECISION.test(text)) return 'decision';
+  if (RX_IO.test(text))       return 'io';
+  return 'process';
+}
+
+function cleanLine(line) {
+  return line.replace(/^\s*(\d+[\.\)]\s*|[-•*▪►→]\s*)/, '').replace(/\s+/g,' ').trim();
+}
+
+function splitIntoSteps(text) {
+  // Numbered list
+  const numbered = text.match(/^\s*\d+[\.\)].+/gm);
+  if (numbered && numbered.length >= 2) return numbered.map(cleanLine).filter(s => s.length > 3);
+  // Bullets
+  const bullets = text.match(/^\s*[-•*▪►→].+/gm);
+  if (bullets && bullets.length >= 2) return bullets.map(cleanLine).filter(s => s.length > 3);
+  // Sentences
+  return text.split(/(?<=[.!?])\s+(?=[A-Z])|[\n\r]+/)
+    .map(s => s.trim()).filter(s => s.length > 8);
+}
+
+function splitParagraphs(text) {
+  const paras = text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+  const steps = [];
+  paras.forEach(para => {
+    const inner = splitIntoSteps(para);
+    if (inner.length > 1) steps.push(...inner);
+    else steps.push(para);
+  });
+  return steps;
+}
+
+function parseText(text) {
+  let steps;
+  if (parseMode === 'steps')     steps = splitIntoSteps(text);
+  else if (parseMode === 'para') steps = splitParagraphs(text);
+  else {
+    steps = splitIntoSteps(text);
+    if (steps.length < 3) steps = splitParagraphs(text);
   }
-  // Try direct parse
-  try {
-    const start = text.indexOf('{');
-    const end = text.lastIndexOf('}');
-    if (start !== -1 && end !== -1) {
-      return JSON.parse(text.slice(start, end + 1));
-    }
-  } catch(e) {}
-  return null;
-}
+  if (!steps.length) return null;
 
-// ─── BUILD SVG ────────────────────────────────────────────────────────────────
-const NODE_W = 200;
-const NODE_H = 60;
-const DECISION_SIZE = 80;
-const TERMINAL_RX = 30;
-const H_GAP = 260;
-const V_GAP = 110;
+  const nodes = [];
+  const edges = [];
+  nodes.push({ id:'start', type:'terminal', label:'Start', full:'Starting point' });
 
-function buildFlowchart(data) {
-  const nodes = data.nodes;
-  const edges = data.edges;
+  let decisionStack = [];
 
-  // Layout: topological levels
-  const levels = assignLevels(nodes, edges);
-  const positions = computePositions(nodes, edges, levels);
+  steps.forEach((step, i) => {
+    const id   = 'n'+i;
+    const type = detectType(step);
+    const label = step.length > 40 ? step.slice(0,38)+'…' : step;
+    nodes.push({ id, type, label, full: step });
 
-  // SVG dimensions
-  let maxX = 0, maxY = 0;
-  Object.values(positions).forEach(p => {
-    maxX = Math.max(maxX, p.x + NODE_W + 60);
-    maxY = Math.max(maxY, p.y + NODE_H + 80);
-  });
-  maxX = Math.max(maxX, 600);
-  maxY = Math.max(maxY, 400);
+    const prevId = i === 0 ? 'start' : 'n'+(i-1);
+    const prevNode = nodes.find(n => n.id === prevId);
 
-  svg.setAttribute('width', maxX);
-  svg.setAttribute('height', maxY);
-  svg.setAttribute('viewBox', `0 0 ${maxX} ${maxY}`);
-
-  let svgContent = `
-    <defs>
-      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#4a4a6a"/>
-      </marker>
-      <marker id="arrowhead-accent" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#00e5ff"/>
-      </marker>
-      <filter id="glow">
-        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-    </defs>
-  `;
-
-  // Draw edges first
-  edges.forEach((edge, i) => {
-    const from = positions[edge.from];
-    const to = positions[edge.to];
-    if (!from || !to) return;
-
-    const fromNode = nodes.find(n => n.id === edge.from);
-    const toNode = nodes.find(n => n.id === edge.to);
-
-    const x1 = from.x + NODE_W / 2;
-    const y1 = from.y + NODE_H;
-    const x2 = to.x + NODE_W / 2;
-    const y2 = to.y;
-
-    const midY = (y1 + y2) / 2;
-    const path = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
-    const isYes = edge.label === 'Yes' || edge.label === 'True';
-    const isNo = edge.label === 'No' || edge.label === 'False';
-    const color = isYes ? '#39ff88' : isNo ? '#ff5555' : '#4a4a6a';
-
-    svgContent += `
-      <path class="edge-path" d="${path}" stroke="${color}" opacity="0.7" marker-end="url(#arrowhead)"/>
-    `;
-
-    if (edge.label) {
-      const lx = (x1 + x2) / 2;
-      const ly = midY;
-      svgContent += `
-        <rect x="${lx - 18}" y="${ly - 10}" width="36" height="18" rx="4" fill="#16161f" opacity="0.9"/>
-        <text class="edge-label" x="${lx}" y="${ly + 4}" text-anchor="middle" fill="${color}" font-weight="700">${edge.label}</text>
-      `;
-    }
-  });
-
-  // Draw nodes
-  nodes.forEach((node, idx) => {
-    const pos = positions[node.id];
-    if (!pos) return;
-    const x = pos.x, y = pos.y;
-    const type = node.type || 'process';
-    const delay = idx * 0.07;
-
-    svgContent += `<g class="node-group" style="animation-delay:${delay}s" 
-      onmouseenter="showTooltip(event, '${(node.description || node.label).replace(/'/g, "&#39;")}')"
-      onmousemove="moveTooltip(event)"
-      onmouseleave="hideTooltip()">`;
-
-    if (type === 'terminal') {
-      // Rounded rectangle (start/end)
-      svgContent += `
-        <rect class="node-rect" x="${x}" y="${y}" width="${NODE_W}" height="${NODE_H}"
-          rx="${TERMINAL_RX}" ry="${TERMINAL_RX}"
-          fill="rgba(57,255,136,0.1)" stroke="#39ff88" stroke-width="1.5"/>
-        <text class="node-text" x="${x + NODE_W/2}" y="${y + 36}" text-anchor="middle" fill="#39ff88">${escXML(node.label)}</text>
-      `;
-    } else if (type === 'decision') {
-      // Diamond
-      const cx = x + NODE_W / 2, cy = y + NODE_H / 2;
-      const hw = NODE_W / 2, hh = NODE_H / 2 + 10;
-      svgContent += `
-        <polygon class="node-rect"
-          points="${cx},${cy-hh} ${cx+hw},${cy} ${cx},${cy+hh} ${cx-hw},${cy}"
-          fill="rgba(181,123,238,0.1)" stroke="#b57bee" stroke-width="1.5"/>
-        <text class="node-text" x="${cx}" y="${cy + 5}" text-anchor="middle" fill="#b57bee">${escXML(node.label)}</text>
-      `;
-    } else if (type === 'io') {
-      // Parallelogram
-      const skew = 14;
-      svgContent += `
-        <polygon class="node-rect"
-          points="${x+skew},${y} ${x+NODE_W},${y} ${x+NODE_W-skew},${y+NODE_H} ${x},${y+NODE_H}"
-          fill="rgba(255,184,48,0.1)" stroke="#ffb830" stroke-width="1.5"/>
-        <text class="node-text" x="${x+NODE_W/2}" y="${y+36}" text-anchor="middle" fill="#ffb830">${escXML(node.label)}</text>
-      `;
+    if (prevNode && prevNode.type === 'decision') {
+      edges.push({ from: prevId, to: id, label: 'Yes' });
+      decisionStack.push({ decId: prevId, elseConnected: false });
     } else {
-      // Process rectangle
-      svgContent += `
-        <rect class="node-rect" x="${x}" y="${y}" width="${NODE_W}" height="${NODE_H}"
-          rx="6" fill="rgba(0,229,255,0.07)" stroke="#00e5ff" stroke-width="1.5"/>
-        <text class="node-text" x="${x + NODE_W/2}" y="${y + 30}" text-anchor="middle">${escXML(truncate(node.label, 22))}</text>
-      `;
-      if (node.sublabel) {
-        svgContent += `<text class="node-sub" x="${x + NODE_W/2}" y="${y + 46}" text-anchor="middle">${escXML(truncate(node.sublabel, 28))}</text>`;
+      edges.push({ from: prevId, to: id });
+    }
+
+    if (/\b(else|otherwise|if not|if no)\b/i.test(step) && decisionStack.length > 0) {
+      const last = decisionStack[decisionStack.length-1];
+      if (!last.elseConnected) {
+        edges.push({ from: last.decId, to: id, label: 'No' });
+        last.elseConnected = true;
       }
     }
-
-    svgContent += `</g>`;
   });
 
-  svg.innerHTML = svgContent;
-  svgData = `<svg xmlns="http://www.w3.org/2000/svg" width="${maxX}" height="${maxY}" viewBox="0 0 ${maxX} ${maxY}">${svgContent}</svg>`;
-  emptyState.style.display = 'none';
+  const lastId = 'n'+(steps.length-1);
+  nodes.push({ id:'end', type:'terminal', label:'End', full:'End of process' });
+  edges.push({ from: lastId, to: 'end' });
+
+  decisionStack.forEach(d => {
+    if (!d.elseConnected) edges.push({ from: d.decId, to: 'end', label: 'No' });
+  });
+
+  return { nodes, edges };
 }
 
-function escXML(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+// ── LAYOUT ────────────────────────────────────────────────────────────────────
+const NW=210, NH=58, HGAP=80, VGAP=95;
 
-function truncate(s, max) {
-  return s && s.length > max ? s.slice(0, max - 1) + '…' : s;
-}
-
-function assignLevels(nodes, edges) {
+function layout(nodes, edges) {
   const levels = {};
-  const inDegree = {};
-  nodes.forEach(n => { inDegree[n.id] = 0; levels[n.id] = 0; });
-  edges.forEach(e => { if (inDegree[e.to] !== undefined) inDegree[e.to]++; });
-
-  const queue = nodes.filter(n => inDegree[n.id] === 0).map(n => n.id);
+  levels['start'] = 0;
+  const queue = ['start'];
   const visited = new Set();
-
   while (queue.length) {
     const id = queue.shift();
     if (visited.has(id)) continue;
     visited.add(id);
-    const outEdges = edges.filter(e => e.from === id);
-    outEdges.forEach(e => {
-      levels[e.to] = Math.max(levels[e.to] || 0, (levels[id] || 0) + 1);
+    edges.filter(e => e.from === id).forEach(e => {
+      levels[e.to] = Math.max(levels[e.to]||0, (levels[id]||0)+1);
       queue.push(e.to);
     });
   }
-  return levels;
-}
-
-function computePositions(nodes, edges, levels) {
   const byLevel = {};
   nodes.forEach(n => {
-    const l = levels[n.id] || 0;
+    const l = levels[n.id]||0;
     if (!byLevel[l]) byLevel[l] = [];
     byLevel[l].push(n.id);
   });
-
-  const positions = {};
-  const MARGIN_X = 40, MARGIN_Y = 40;
-
-  Object.keys(byLevel).sort((a,b) => a-b).forEach(level => {
-    const ids = byLevel[level];
-    const totalW = ids.length * (NODE_W + H_GAP) - H_GAP;
-    ids.forEach((id, i) => {
-      const x = MARGIN_X + i * (NODE_W + H_GAP);
-      const y = MARGIN_Y + level * (NODE_H + V_GAP);
-      positions[id] = { x, y };
+  const pos = {};
+  const MARGIN = 50;
+  Object.keys(byLevel).sort((a,b)=>a-b).forEach(lv => {
+    const ids = byLevel[lv];
+    ids.forEach((id,i) => {
+      pos[id] = { x: MARGIN + i*(NW+HGAP), y: MARGIN + lv*(NH+VGAP) };
     });
   });
-
-  return positions;
+  return pos;
 }
 
-// ─── GENERATE ────────────────────────────────────────────────────────────────
-async function generateFlowchart() {
-  const text = input.value.trim();
-  if (!text) return;
+// ── RENDER ────────────────────────────────────────────────────────────────────
+const COLORS = {
+  terminal: { fill:'rgba(192,57,43,0.1)',   stroke:'#c0392b', text:'#c0392b' },
+  process:  { fill:'rgba(26,82,118,0.08)',   stroke:'#1a5276', text:'#1a5276' },
+  decision: { fill:'rgba(44,122,75,0.1)',    stroke:'#2c7a4b', text:'#2c7a4b' },
+  io:       { fill:'rgba(125,60,152,0.1)',   stroke:'#7d3c98', text:'#7d3c98' },
+};
 
-  genBtn.classList.add('loading');
-  genBtn.disabled = true;
-  emptyState.style.display = 'flex';
-  emptyState.querySelector('.empty-text').textContent = 'Generating your flowchart…';
-  emptyState.querySelector('.empty-sub').textContent = 'AI is thinking';
-  svg.innerHTML = '';
-
-  const systemPrompt = `You are a flowchart generator. Given a concept, algorithm, or process description, return ONLY a JSON object (no markdown, no explanation) that represents a flowchart.
-
-The JSON must have this exact structure:
-{
-  "nodes": [
-    { "id": "n1", "type": "terminal", "label": "Start", "description": "Starting point" },
-    { "id": "n2", "type": "process", "label": "Short label", "sublabel": "optional detail", "description": "Tooltip explanation" },
-    { "id": "n3", "type": "decision", "label": "Condition?", "description": "What is being decided" },
-    { "id": "n4", "type": "io", "label": "Input/Output", "description": "Data being read or written" },
-    { "id": "n5", "type": "terminal", "label": "End", "description": "End point" }
-  ],
-  "edges": [
-    { "from": "n1", "to": "n2" },
-    { "from": "n3", "to": "n4", "label": "Yes" },
-    { "from": "n3", "to": "n5", "label": "No" }
-  ]
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-Rules:
-- Node types: "terminal" (start/end), "process" (action/step), "decision" (yes/no branch), "io" (input or output)
-- Keep labels SHORT (max 4 words). Put details in "description" for tooltip.
-- Use 6-16 nodes for a good flowchart.
-- Edge labels: "Yes"/"No" for decisions only.
-- Return ONLY the raw JSON. No markdown fences, no text before or after.`;
+function wrapText(text, maxChars) {
+  const words = text.split(' ');
+  const lines = []; let line = '';
+  words.forEach(w => {
+    if ((line+' '+w).trim().length > maxChars) { if(line) lines.push(line.trim()); line=w; }
+    else line = (line+' '+w).trim();
+  });
+  if (line) lines.push(line.trim());
+  return lines;
+}
 
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: text }]
-      })
+function renderSVG(data) {
+  const { nodes, edges } = data;
+  const pos = layout(nodes, edges);
+  let maxX=0, maxY=0;
+  Object.values(pos).forEach(p => { maxX=Math.max(maxX,p.x+NW+60); maxY=Math.max(maxY,p.y+NH+80); });
+  maxX=Math.max(maxX,700); maxY=Math.max(maxY,400);
+
+  let s = `<defs>
+    <marker id="arr"     markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#c8bfad"/></marker>
+    <marker id="arr-yes" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#2c7a4b"/></marker>
+    <marker id="arr-no"  markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#c0392b"/></marker>
+  </defs>`;
+
+  // Edges
+  edges.forEach(edge => {
+    const f=pos[edge.from], t=pos[edge.to];
+    if (!f||!t) return;
+    const x1=f.x+NW/2, y1=f.y+NH, x2=t.x+NW/2, y2=t.y, my=(y1+y2)/2;
+    const d=`M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`;
+    const isY=edge.label==='Yes', isN=edge.label==='No';
+    const col=isY?'#2c7a4b':isN?'#c0392b':'#c8bfad';
+    const mk=isY?'arr-yes':isN?'arr-no':'arr';
+    s+=`<path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" opacity="0.8" marker-end="url(#${mk})"/>`;
+    if (edge.label) {
+      const lx=(x1+x2)/2, ly=my;
+      s+=`<rect x="${lx-14}" y="${ly-9}" width="28" height="17" rx="3" fill="#f5f0e8" stroke="${col}" stroke-width="1"/>`;
+      s+=`<text x="${lx}" y="${ly+5}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="600" fill="${col}">${esc(edge.label)}</text>`;
+    }
+  });
+
+  // Nodes
+  nodes.forEach((node,idx) => {
+    const p=pos[node.id]; if(!p) return;
+    const {x,y}=p, c=COLORS[node.type]||COLORS.process;
+    const delay=idx*0.05;
+    const lines=wrapText(node.label,26);
+    const lineH=16, textY=y+NH/2-((lines.length-1)*lineH)/2;
+
+    s+=`<g class="node-g" style="animation-delay:${delay}s" onmouseenter="showTip(event,'${esc(node.full)}')" onmousemove="moveTip(event)" onmouseleave="hideTip()">`;
+
+    if (node.type==='terminal') {
+      s+=`<rect x="${x}" y="${y}" width="${NW}" height="${NH}" rx="28" fill="${c.fill}" stroke="${c.stroke}" stroke-width="2"/>`;
+    } else if (node.type==='decision') {
+      const cx=x+NW/2, cy=y+NH/2, hw=NW/2, hh=NH/2+12;
+      s+=`<polygon points="${cx},${cy-hh} ${cx+hw},${cy} ${cx},${cy+hh} ${cx-hw},${cy}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="2"/>`;
+    } else if (node.type==='io') {
+      const sk=16;
+      s+=`<polygon points="${x+sk},${y} ${x+NW},${y} ${x+NW-sk},${y+NH} ${x},${y+NH}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="2"/>`;
+    } else {
+      s+=`<rect x="${x}" y="${y}" width="${NW}" height="${NH}" rx="5" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>`;
+    }
+
+    lines.forEach((line,li) => {
+      s+=`<text x="${x+NW/2}" y="${textY+li*lineH+5}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="600" fill="${c.text}">${esc(line)}</text>`;
     });
 
-    const data = await response.json();
-    const raw = data.content.map(b => b.text || '').join('');
-    const parsed = parseNodes(raw);
+    s+=`</g>`;
+  });
 
-    if (parsed && parsed.nodes && parsed.edges) {
-      buildFlowchart(parsed);
-    } else {
-      showError('Could not parse the flowchart. Try rephrasing your input.');
-    }
-  } catch (err) {
-    showError('Error connecting to AI. Please try again.');
-    console.error(err);
-  } finally {
-    genBtn.classList.remove('loading');
-    genBtn.disabled = false;
+  svgEl.setAttribute('width', maxX);
+  svgEl.setAttribute('height', maxY);
+  svgEl.setAttribute('viewBox', `0 0 ${maxX} ${maxY}`);
+  svgEl.innerHTML = s;
+  svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="${maxX}" height="${maxY}" viewBox="0 0 ${maxX} ${maxY}">${s}</svg>`;
+  emptyEl.style.display = 'none';
+  document.getElementById('node-count').textContent = `${nodes.length} nodes · ${edges.length} edges`;
+}
+
+function generateFlowchart() {
+  const text = inputEl.value.trim();
+  if (!text) return;
+  const data = parseText(text);
+  if (!data || data.nodes.length < 2) {
+    emptyEl.querySelector('.empty-text').textContent = 'Add numbers (1. 2. 3.) or bullets to your text';
+    emptyEl.style.display = 'flex'; return;
   }
+  renderSVG(data);
+  resetZoom();
 }
 
-function showError(msg) {
-  emptyState.style.display = 'flex';
-  emptyState.querySelector('.empty-icon').textContent = '⚠';
-  emptyState.querySelector('.empty-text').textContent = msg;
-  emptyState.querySelector('.empty-sub').textContent = 'Try again with a different input';
-}
-
-// Enter key shortcut
-input.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) generateFlowchart();
+inputEl.addEventListener('keydown', e => {
+  if ((e.ctrlKey||e.metaKey) && e.key==='Enter') generateFlowchart();
 });
 </script>
 </body>
